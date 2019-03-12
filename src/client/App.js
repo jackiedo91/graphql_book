@@ -20,7 +20,8 @@ const posts = [{
 
 export default class App extends Component {
   state = {
-    posts: posts
+    posts: posts,
+    postContent: '',
   };
 
   // constructor(props) {
@@ -30,10 +31,23 @@ export default class App extends Component {
   //   };
   // }
 
+  handlePostContentChange = (event) => {
+    this.setState({
+      postContent: event.target.value
+    })
+  }
+
   render() {
-    const { posts } = this.state;
+    const { posts, postContent } = this.state;
     return (
       <div className="container">
+        <div className="postForm">
+          <form onSubmit={this.handleSubmit}>
+            <textarea value={postContent} onChange={this.handlePostContentChange} placeholder="Write your custom post!"/>
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+
         <div className="feed">
           {posts.map((post, i) =>
             <div key={post.id} className="post">
