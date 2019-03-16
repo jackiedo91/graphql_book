@@ -3,7 +3,7 @@ import logger from '../../helpers/logger';
 export default (utils) => {
   // const { db } = this;
   const { db } = utils;
-  const { Post, User } = db.models;
+  const { Post, User, Message, Chat } = db.models;
 
   const resolvers = {
     Post: {
@@ -11,9 +11,45 @@ export default (utils) => {
         return post.getUser();
       },
     },
+    Message: {
+      user(message, args, context) {
+        return message.getUser();
+      },
+      chat(message, args, context) {
+        return message.getUser();
+      },
+    },
+    Chat: {
+      messages(chat, args, context) {
+        return chat.getMessages({ order: [['id', 'ASC']] });
+      },
+      users(chat, args, context) {
+        return chat.getUsers();
+      },
+    },
     RootQuery: {
       posts(root, args, context) {
         return Post.findAll({ order: [['createdAt', 'DESC']] });
+      },
+      chats(root, args, context) {
+        return User.findAll().then((users) => {
+          if (!users.length) {
+            return [];
+          }
+
+          const usersRow = users[0];
+
+          return Chat.findAll({
+            include: [{
+              model: User,
+              required: true,
+              through: { where: { userId: usersRow.id } },
+            },
+            {
+              model: Message,
+            }],
+          });
+        });
       },
     },
     RootMutation: {
@@ -25,7 +61,6 @@ export default (utils) => {
 
         return User.findAll().then((users) => {
           const usersRow = users[0];
-
           return Post.create({
             ...post,
           }).then((newPost) => {
