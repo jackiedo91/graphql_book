@@ -14,6 +14,7 @@ export default (sequelize) => {
     db[model.name] = model;
   });
 
+  // Config associations for per models
   Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {
       db[modelName].associate(db);

@@ -7,7 +7,7 @@ import Schema from './schema';
 export default (utils) => {
   const executableSchema = makeExecutableSchema({
     typeDefs: Schema,
-    resolvers: Resolvers.call(utils),
+    resolvers: Resolvers(utils),
   });
 
   const server = new ApolloServer({
