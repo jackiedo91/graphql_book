@@ -3,7 +3,7 @@ import logger from '../../helpers/logger';
 export default (utils) => {
   // const { db } = this;
   const { db } = utils;
-  const { Post } = db.models;
+  const { Post, User } = db.models;
 
   const resolvers = {
     Post: {
@@ -17,16 +17,25 @@ export default (utils) => {
       },
     },
     RootMutation: {
-      addPost(root, { post, user }, context) {
-        const postObject = {
-          ...post,
-          user,
-          id: posts.length + 1,
-        };
+      addPost(root, { post }, context) {
+        logger.log({
+          level: 'info',
+          message: 'Post was created',
+        });
 
-        posts.push(postObject);
-        logger.log({ level: 'info', message: 'Post was created' });
-        return postObject;
+        return User.findAll().then((users) => {
+          const usersRow = users[0];
+
+          return Post.create({
+            ...post,
+          }).then((newPost) => {
+            return Promise.all([
+              newPost.setUser(usersRow.id),
+            ]).then(() => {
+              return newPost;
+            });
+          });
+        });
       },
     },
   };
