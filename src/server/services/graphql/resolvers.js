@@ -1,3 +1,5 @@
+import logger from '../../helpers/logger';
+
 const posts = [
   { "id": 1,
     "text": 'ahihi',
@@ -34,6 +36,7 @@ const resolvers = {
       };
 
       posts.push(postObject);
+      logger.log({ level: 'info', message: 'Post was created' });
       return postObject;
     },
   },
