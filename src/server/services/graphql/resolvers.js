@@ -1,45 +1,29 @@
 import logger from '../../helpers/logger';
 
-const posts = [
-  { "id": 1,
-    "text": 'ahihi',
-    "dontPass": "no value displayed",
-    "user": {
-      "avatar": "avatar 1",
-      "username": "user name 1"
-    }
-  },
-  {
-    "text": 'ahaha',
-    "dontPass": "no value displayed"
-  },
-  {
-    "id": 3,
-    "user": {
-      "avatar": "avatar 2"
-    }
-  },
-]
+export default function resolver() {
+  const { db } = this;
+  const { Post } = db.models;
 
-const resolvers = {
-  RootQuery: {
-    posts(root, args, context) {
-      return posts;
+  const resolvers = {
+    RootQuery: {
+      posts(root, args, context) {
+        return Post.findAll({ order: [['createdAt', 'DESC']] });
+      },
     },
-  },
-  RootMutation: {
-    addPost(root, { post, user }, context) {
-      const postObject = {
-        ...post,
-        user,
-        id: posts.length + 1,
-      };
+    RootMutation: {
+      addPost(root, { post, user }, context) {
+        const postObject = {
+          ...post,
+          user,
+          id: posts.length + 1,
+        };
 
-      posts.push(postObject);
-      logger.log({ level: 'info', message: 'Post was created' });
-      return postObject;
+        posts.push(postObject);
+        logger.log({ level: 'info', message: 'Post was created' });
+        return postObject;
+      },
     },
-  },
+  };
+
+  return resolvers;
 };
-
-export default resolvers;

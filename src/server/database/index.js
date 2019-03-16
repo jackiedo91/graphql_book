@@ -8,7 +8,7 @@ const config = configFile[env];
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 const db = {
-  models: models(sequelize)
+  models: models(sequelize),
   sequelize,
 };
 
