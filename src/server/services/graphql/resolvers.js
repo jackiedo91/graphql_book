@@ -51,6 +51,17 @@ export default (utils) => {
           });
         });
       },
+      chat(root, { chatId }, context) {
+        return Chat.findByPk(chatId, {
+          include: [{
+            model: User,
+            required: true,
+          },
+          {
+            model: Message,
+          }],
+        });
+      },
     },
     RootMutation: {
       addPost(root, { post }, context) {
