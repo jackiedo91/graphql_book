@@ -8,40 +8,31 @@ import services from './services';
 const app = express();
 const root = path.join(__dirname, '../../');
 
-app.listen(8000, () => console.log('Listening on port 8000!'));
-
 // === ROUTING ===
 // Add helmet to secure application
-app.use(helmet());
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "'unsafe-inline'"],
-    styleSrc: ["'self'", "'unsafe-inline'"],
-    imgSrc: ["'self'", "data:", "*.amazonaws.com"]
-  }
-}));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet());
+  app.use(helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ['self'],
+      scriptSrc: ['self', 'unsafe-inline'],
+      styleSrc: ['self', 'unsafe-inline'],
+      imgSrc: ['self', 'data:', '*.amazonaws.com']
+    }
+  }));
+  // Compress response
+  app.use(compress());
+  // Allow CORS
+  app.use(cors());
+}
+
 app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
-
-// Compress response
-app.use(compress());
-
-// Allow CORS
-app.use(cors());
-
 // Generate routes to serve static files
 app.use('/', express.static(path.join(root, 'dist/client')));
 app.use('/uploads', express.static(path.join(root, 'uploads')));
 
-
-
-
-
-app.get('/', function(req, res) {
-  res.sendFile(path.join(root, '/dist/client/index.html'));
-});
-
-
+// GraphQL and other services
 const serviceNames = Object.keys(services);
 
 for (let i = 0; i < serviceNames.length; i += 1) {
@@ -52,3 +43,11 @@ for (let i = 0; i < serviceNames.length; i += 1) {
     app.use(`/${name}`, services[name]);
   }
 }
+
+// Send reactjs page
+app.get('/', function(req, res) {
+  res.sendFile(path.join(root, '/dist/client/index.html'));
+});
+
+// === LISTENING ON PORT 8000 ===
+app.listen(8000, () => console.log('Listening on port 8000!'));
