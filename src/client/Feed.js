@@ -1,26 +1,22 @@
 import React, { Component } from 'react';
 import '../../assets/css/style.css';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
-const posts = [{
-  id: 2,
-  text: 'Lorem ipsum',
-  user: {
-    avatar: '/uploads/avatar1.png',
-    username: 'Test User'
+const GET_POSTS = gql`{
+  posts {
+    id
+    text
+    user {
+      avatar
+      username
+    }
   }
-},
-{
-  id: 1,
-  text: 'Lorem ipsum',
-  user: {
-    avatar: '/uploads/avatar2.png',
-    username: 'Test User 2'
-  }
-}];
+}`;
 
-export default class Feed extends Component {
+
+class Feed extends Component {
   state = {
-    posts: posts,
     postContent: '',
   };
 
@@ -55,7 +51,17 @@ export default class Feed extends Component {
   }
 
   render() {
-    const { posts, postContent } = this.state;
+    const { posts, loading, error } = this.props;
+    const { postContent } = this.state;
+
+    if(loading) {
+      return "Loading...";
+    }
+    if(error) {
+      return error.message;
+    }
+
+
     return (
       <div className="container">
         <div className="postForm">
@@ -83,4 +89,10 @@ export default class Feed extends Component {
   }
 }
 
-
+export default graphql(GET_POSTS, {
+  props: ({ data: { loading, error, posts }} ) => ({
+    loading,
+    posts,
+    error
+  })
+})(Feed)
