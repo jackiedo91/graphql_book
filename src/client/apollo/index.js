@@ -4,6 +4,9 @@ import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 
+import gql from 'graphql-tag';
+
+// Create a Apollo client to work with Graphql server
 const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
@@ -23,5 +26,21 @@ const client = new ApolloClient({
   ]),
   cache: new InMemoryCache(),
 });
+
+
+// Testing GraphQL
+client.query({
+  query: gql`
+    {
+      posts {
+        id
+        text
+        user {
+          avatar
+          username
+        }
+      }
+    }`
+}).then(result => console.log(result));
 
 export default client;

@@ -24,6 +24,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "graphql": "^14.1.1",
+    "graphql-tag": "^2.10.1",
     "graphql-tools": "^4.0.4",
     "helmet": "^3.16.0",
     "mysql2": "^1.6.5",
