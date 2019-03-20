@@ -26,6 +26,11 @@ export default (utils) => {
       users(chat, args, context) {
         return chat.getUsers();
       },
+      lastMessage(chat, args, context) {
+        return chat.getMessages({ limit: 1, order: [['id', 'DESC']] }).then((message) => {
+          return message[0];
+        });
+      },
     },
     RootQuery: {
       posts(root, args, context) {
