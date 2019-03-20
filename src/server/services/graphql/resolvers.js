@@ -70,9 +70,10 @@ export default (utils) => {
           message: 'Post was created',
         });
 
-        let seconds = 10;
-        let waitTill = new Date(new Date().getTime() + seconds * 1000);
-        while(waitTill > new Date()){};
+        // // Sleep to test loading
+        // let seconds = 10;
+        // let waitTill = new Date(new Date().getTime() + seconds * 1000);
+        // while(waitTill > new Date()){};
 
         return User.findAll().then((users) => {
           const usersRow = users[0];

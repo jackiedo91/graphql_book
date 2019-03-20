@@ -108,7 +108,10 @@ class Feed extends Component {
         </div>
 
         <div className="feed">
-          <Query query={GET_POSTS}>
+          <Query
+            query={GET_POSTS}
+            pollInterval={5000}
+          >
             {({ loading, error, data }) => {
               if (loading) return "Loading...";
               if (error) return error.message;
