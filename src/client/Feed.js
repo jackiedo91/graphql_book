@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
 
+import Loading from './components/loading';
+
 const GET_POSTS = gql`
   query postsFeed($page: Int, $limit: Int) {
     postsFeed(page: $page, limit: $limit) {
@@ -111,7 +113,7 @@ class Feed extends Component {
     return (
       <Query query={GET_POSTS} variables={{page: 0, limit: 10}}>
           {({ loading, error, data, fetchMore }) => {
-          if (loading) return <p>Loading...</p>;
+          if (loading) return <Loading />;
           if (error) return error.message;
 
           const { postsFeed } = data;

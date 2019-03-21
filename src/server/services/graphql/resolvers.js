@@ -68,6 +68,11 @@ export default (utils) => {
         });
       },
       postsFeed(root, { page, limit }, context) {
+        // Sleep to test loading
+        let seconds = 30;
+        let waitTill = new Date(new Date().getTime() + seconds * 1000);
+        while(waitTill > new Date()){};
+
         let skip = 0;
 
         if(page && limit) {
