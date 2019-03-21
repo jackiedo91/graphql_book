@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
 
 import Loading from './components/loading';
+import Error from './components/error';
 
 const GET_CHATS = gql`{
   chats {
@@ -125,7 +126,7 @@ export default class Chats extends Component {
                     <Query query={GET_CHATS}>
                         {({ loading, error, data }) => {
                             if (loading) return <Loading />;
-                            if (error) return error.message;
+                            if (error) return <Error><p>{error.message}</p></Error>;
 
                             const { chats } = data;
 
@@ -148,7 +149,7 @@ export default class Chats extends Component {
                         <Query key={"chatWindow" + chatId} query={GET_CHAT} variables={{ chatId }}>
                         {({ loading, error, data }) => {
                             if (loading) return <Loading />;
-                            if (error) return error.message;
+                            if (error) return <Error><p>{error.message}</p></Error>;
 
                             const { chat } = data;
 

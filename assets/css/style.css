@@ -214,6 +214,7 @@ form [type=submit] {
   }
 }
 
+/* Loading */
 .bouncer {
   margin: 20px auto;
   border-radius: 100%;
@@ -241,4 +242,18 @@ form [type=submit] {
     transform: scale(1.0);
     opacity: 0;
   }
+}
+
+/* Error */
+.message {
+  margin: 20px auto;
+  padding: 5px;
+  max-width: 400px;
+}
+
+.error.message {
+  border-radius: 5px;
+  background-color: #FFF7F5;
+  border: 1px solid #FF9566;
+  width: 100%;
 }
