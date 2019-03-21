@@ -181,6 +181,7 @@ form [type=submit] {
   border: none;
   padding: 2px;
 }
+
 .chatWindow .input input:focus {
   outline: none;
 }
