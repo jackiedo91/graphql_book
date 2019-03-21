@@ -36,6 +36,18 @@ const GET_CHAT = gql`
   }
 `;
 
+const ADD_MESSAGE = gql`
+  mutation addMessage($message : MessageInput!) {
+    addMessage(message : $message) {
+      id
+      text
+      user {
+        id
+      }
+    }
+  }
+`;
+
 export default class Chats extends Component {
   state = {
     openChats: [],
@@ -55,6 +67,7 @@ export default class Chats extends Component {
   }
 
   closeChat = (id) => {
+    console.log('ahihi')
     var openChats = this.state.openChats.slice();
     const index = openChats.indexOf(id);
     openChats.splice(index,1),
@@ -121,7 +134,7 @@ export default class Chats extends Component {
                   <div className="chatWindow">
                     <div className="header">
                       <span>{chat.users[1].username}</span>
-                      <button className="close">X</button>
+                      <button className="close" onClick={() => self.closeChat(chat.id)}>X</button>
                     </div>
                     <div className="messages">
                       {chat.messages.map((message, j) =>
