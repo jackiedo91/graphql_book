@@ -16,6 +16,20 @@ const ADD_POST = gql`
   }
 `;
 
+const GET_POSTS = gql`
+  query postsFeed($page: Int, $limit: Int) {
+    postsFeed(page: $page, limit: $limit) {
+      posts {
+        id
+        text
+        user {
+          avatar
+          username
+        }
+      }
+    }
+  }
+`;
 export default class AddPostMutation extends Component {
   state = {
     postContent: '',
