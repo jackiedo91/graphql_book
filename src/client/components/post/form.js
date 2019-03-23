@@ -23,9 +23,7 @@ export default class PostForm extends Component {
               });
             } else {
               addPost({ variables: { post: { text: postContent } } }).then(() => {
-                self.setState((prevState) => ({
-                  postContent: ''
-                }));
+                this.props.changePostContent('');
               });
             }
           }}

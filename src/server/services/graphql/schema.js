@@ -29,6 +29,10 @@ const typeDefinitions = `
     posts: [Post]
   }
 
+  type Response {
+    success: Boolean
+  }
+
   type RootQuery {
     posts: [Post]
     chats: [Chat]
@@ -67,7 +71,10 @@ const typeDefinitions = `
     updatePost (
       post: PostInput!
       postId: Int!
-    ): Post
+    ): Post,
+    deletePost (
+      postId: Int!
+    ): Response
   }
 
   schema {
